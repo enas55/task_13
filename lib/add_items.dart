@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sqflite/sqlite_api.dart';
 import 'package:task_13/helpers/sql_helper.dart';
 import 'package:task_13/models/category_data.dart';
 
@@ -58,6 +61,7 @@ class _AddItemsState extends State<AddItems> {
                   try {
                     if (keyItem.currentState != null) {
                       var sqlHelper = GetIt.I.get<SqlHelper>();
+                      ConflictAlgorithm.replace;
                       await sqlHelper.db!.insert(
                         'Categories',
                         {
@@ -65,6 +69,8 @@ class _AddItemsState extends State<AddItems> {
                           'description': descriptionController.text,
                         },
                       );
+                      log(nameController.text);
+                      log(descriptionController.text);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           backgroundColor: Colors.green,
@@ -108,6 +114,7 @@ Widget getTextField({
       }
       return null;
     },
+    
     controller: controller,
     decoration: InputDecoration(
       label: Text(label),
