@@ -59,7 +59,7 @@ class _AddItemsState extends State<AddItems> {
                 ),
                 onPressed: () async {
                   try {
-                    if (keyItem.currentState != null) {
+                    if (keyItem.currentState!.validate()) {
                       var sqlHelper = GetIt.I.get<SqlHelper>();
                       ConflictAlgorithm.replace;
                       await sqlHelper.db!.insert(
@@ -114,7 +114,6 @@ Widget getTextField({
       }
       return null;
     },
-    
     controller: controller,
     decoration: InputDecoration(
       label: Text(label),

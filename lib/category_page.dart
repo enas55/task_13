@@ -26,7 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Future<void> getData() async {
-    GetIt.I.get<SqlHelper>().createTables();
+    await GetIt.I.get<SqlHelper>().createTables();
   }
 
   Future<void> getInfo() async {
