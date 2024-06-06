@@ -1,10 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:task_13/add_items.dart';
 import 'package:task_13/helpers/sql_helper.dart';
 import 'package:task_13/models/category_data.dart';
+import 'package:task_13/products_page.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({
@@ -36,18 +36,13 @@ class _CategoryPageState extends State<CategoryPage> {
       List<CategoryData> cat = [];
       for (var item in results) {
         cat.add(
-          CategoryData.fromJson(
-            {
-              'name': item['name'],
-              'description': item['description'],
-            },
-          ),
+          CategoryData.fromJson(item),
         );
       }
-      setState(() {});
     } catch (e) {
       log("Error : $e");
     }
+    setState(() {});
   }
 
   List<CategoryData> cat = [];
@@ -63,13 +58,16 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                var res = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (ctx) => const AddItems(),
                   ),
                 );
+                if (res ?? false) {
+                  getInfo();
+                }
               },
               icon: const Icon(
                 Icons.add,
@@ -78,17 +76,34 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ],
         ),
-        body: cat.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: cat.length,
-                itemBuilder: (context, index) {
-                  var result = cat[index];
-                  return ListTile(
-                    title: Text(result.name ?? 'No name found'),
-                    subtitle:
-                        Text(result.description ?? 'No description found'),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            cat.isEmpty
+                ? const Center(child :Text('No data'))
+                : ListView.builder(
+                    itemCount: cat.length,
+                    itemBuilder: (context, index) {
+                      var result = cat[index];
+                      return ListTile(
+                        title: Text(result.name!),
+                        subtitle:
+                            Text(result.description!),
+                      );
+                    }),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) {
+                        return const ProductsPage();
+                      },
+                    ),
                   );
-                }));
+                },
+                child: const Text('Products Page'))
+          ],
+        ));
   }
 }

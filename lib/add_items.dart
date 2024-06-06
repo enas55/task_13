@@ -79,7 +79,7 @@ class _AddItemsState extends State<AddItems> {
                           ),
                         ),
                       );
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     }
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(

@@ -24,8 +24,10 @@ class SqlHelper {
     price double,
     stock integer,
     isAvailable boolean,
-    image blob,
-    categoryId integer
+    image text,
+    categoryId integer,
+    foreign key(categoryId) references categories(id)
+    ON Delete restrict
   )""");
       
       batch.execute("""
